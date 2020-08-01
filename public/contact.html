@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contact Page</title>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </head>
+    <body>
+        <h1>Contact Page</h1>
+
+        <!-- Contact form -->
+        <form id="contactForm">
+            <div class="form-section">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name">
+            </div>
+            <div class="form-section">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email">
+            </div>
+            <div class="form-section">
+                <label for="message">Message:</label>
+                <textarea type="text" name="message" id="message"></textarea>
+            </div>
+            <div class="form-section">
+                <div class="g-recaptcha" data-sitekey="data-sitekey-here"></div>
+            </div>
+            <button type="submit" value="submit">Send message</button>
+        </form>
+
+        <script>
+            document.getElementById('contactForm').addEventListener('submit', submitForm);
+            function submitForm(e) {
+                e.preventDefault();
+
+                const name = document.querySelector('#name').value;
+                const email = document.querySelector('#email').value;
+                const message = document.querySelector('#message').value;
+                const captcha = document.querySelector('#g-recaptcha-response').value;
+
+                fetch('/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-type': 'application/json'
+                    },
+                    body:JSON.stringify({name: name, email: email, message: message, captcha: captcha})
+                });
+            }
+        </script>
+    </body>
+</html>
